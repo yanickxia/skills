@@ -1,6 +1,8 @@
 # Trilium ETAPI — Full Endpoint Reference
 
-Source: `apps/server/src/assets/etapi.openapi.yaml` (OpenAPI 3.0.3). All paths are prefixed with `/etapi`. Every endpoint requires the `Authorization` header except `/auth/login`.
+Source: official ETAPI Redoc (`/rest-api/etapi/`, OpenAPI 3.0.3). All paths below are prefixed with `/etapi`. Every endpoint requires the `Authorization` header except `/auth/login`.
+
+For the separate Internal API docs (`/rest-api/internal/`), paths are prefixed with `/api` and most authenticated endpoints require a logged-in session, not just an ETAPI token.
 
 ## Servers
 
@@ -79,8 +81,28 @@ Returns a ZIP (`application/zip`). Use `noteId=root` to export the whole documen
 ### `POST /notes/{noteId}/import`
 Imports a ZIP into the given note. Response 201 = `NoteWithBranch`.
 
+The OpenAPI schema does not declare a request body even though the endpoint description says it imports a ZIP. Validate this endpoint against the target Trilium version with a short curl timeout before relying on it in automation.
+
 ### `POST /notes/{noteId}/revision?format=html|markdown`
 Creates a revision snapshot of the note. Response 204.
+
+### `GET /notes/{noteId}/revisions`
+Returns revisions for the note. Response 200 = `Revision[]`.
+
+### `GET /notes/{noteId}/attachments`
+Returns attachments owned by the note. Response 200 = `Attachment[]`.
+
+### `POST /notes/{noteId}/undelete`
+Restores a deleted note. Response 200 = restored note or `NoteWithBranch` depending on server version.
+
+### `GET /notes/history?ancestorNoteId={noteId}`
+Returns recent note changes. `ancestorNoteId` is optional and defaults to `root`.
+
+### `GET /revisions/{revisionId}`
+Returns revision metadata.
+
+### `GET /revisions/{revisionId}/content`
+Returns revision content.
 
 ---
 
@@ -185,9 +207,9 @@ These GETs auto-create on demand: the first hit for a given day/week/month/year 
 |----------|-----------|-------|
 | `GET /inbox/{date}` | `YYYY-MM-DD` | Inbox (the note tagged `#inbox`, or that date's day note) |
 | `GET /calendar/days/{date}` | `YYYY-MM-DD` | Day note |
-| `GET /calendar/weeks/{date}` | `YYYY-MM-DD` | Monday-of-week note for that date |
+| `GET /calendar/weeks/{week}` | `YYYY-Www` in current docs; some versions accept `YYYY-MM-DD` | Week note |
 | `GET /calendar/months/{month}` | `YYYY-MM` | Month note |
-| `GET /calendar/years/{year}` | `YYYY-MM` (the spec keeps this pattern) | Year note |
+| `GET /calendar/years/{year}` | `YYYY` | Year note |
 
 All return `Note`.
 

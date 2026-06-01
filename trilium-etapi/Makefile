@@ -1,5 +1,5 @@
 SLUG      := trilium-etapi
-SKILL_DIR := trilium
+SKILL_DIR := trilium-etapi
 VERSION   := 0.0.1
 
 .PHONY: publish print

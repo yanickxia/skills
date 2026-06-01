@@ -10,6 +10,40 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` (frontmatter
 |-------|-------------|
 | [trilium-etapi](trilium-etapi/) | Interact with a Trilium Notes server via the ETAPI REST API — notes, branches, attributes, attachments, day/week/month notes. |
 
+## Installing with `npx skills`
+
+From this repository root, install the `trilium-etapi` skill for Codex:
+
+```bash
+npx skills add . --skill trilium-etapi --agent codex -g -y
+```
+
+Install for all supported agents instead:
+
+```bash
+npx skills add . --skill trilium-etapi --agent '*' -g -y
+```
+
+Use project-level installation by omitting `-g`:
+
+```bash
+npx skills add . --skill trilium-etapi --agent codex -y
+```
+
+After pushing this repository to GitHub, the same skill can be installed remotely:
+
+```bash
+npx skills add yanickxia/skills --skill trilium-etapi --agent codex -g -y
+```
+
+Check installation:
+
+```bash
+npx skills ls -g --agent codex
+```
+
+By default local installs are symlinked into agent directories. Add `--copy` if you want copied files instead.
+
 ## Layout
 
 ```

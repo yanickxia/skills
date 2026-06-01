@@ -30,9 +30,11 @@ ETAPI is the external REST API for Trilium Notes (Trilium ≥ 0.50). All request
 All examples below assume:
 
 ```bash
-export TRILIUM_URL="http://localhost:8080"   # no trailing /etapi
-export TRILIUM_TOKEN="<generate via Trilium → Options → ETAPI>"
+export TRILIUM_URL="http://localhost:37840"  # desktop instance; no trailing /etapi
+export TRILIUM_TOKEN="<generate via Trilium -> Options -> ETAPI>"
 ```
+
+Common ports: desktop instances often use `37840` or `37740`; self-hosted server defaults to `8080`.
 
 If you only have a password (and the server allows password login), exchange it for a token:
 
@@ -69,6 +71,42 @@ curl -sX POST "$TRILIUM_URL/etapi/auth/login" \
 | Trigger DB backup | PUT | `/etapi/backup/{name}` |
 
 Full endpoint, parameter, and schema reference: [api-reference.md](api-reference.md).
+
+## Validation
+
+Use the bundled scripts before publishing or after changing examples:
+
+```bash
+trilium-etapi/scripts/list-api-endpoints.sh --kind etapi
+trilium-etapi/scripts/list-api-endpoints.sh --kind internal
+trilium-etapi/scripts/probe-internal-api.sh
+
+TRILIUM_URL="http://localhost:37840" \
+TRILIUM_TOKEN="$TRILIUM_TOKEN" \
+trilium-etapi/scripts/validate-live.sh
+```
+
+The live validator prompts for `TRILIUM_TOKEN` if it is not exported and stdin is a TTY. It creates temporary notes under `root` and deletes them at exit. Optional checks:
+
+```bash
+TRILIUM_VALIDATE_BACKUP=1 trilium-etapi/scripts/validate-live.sh
+TRILIUM_VALIDATE_IMPORT=1 trilium-etapi/scripts/validate-live.sh
+TRILIUM_PASSWORD="..." trilium-etapi/scripts/validate-live.sh
+```
+
+`TRILIUM_VALIDATE_IMPORT=1` currently uses the documented `POST /notes/{noteId}/import` endpoint with an exported ZIP body. On Trilium 0.103.0 this endpoint may time out; keep the curl timeout enabled and report the version when debugging.
+
+The Trilium "Internal API" docs are separate from ETAPI. Internal `/api/...` endpoints generally require a logged-in browser/session cookie or a separate internal Bearer token; an ETAPI token is enough for `/etapi/...` but not for authenticated Internal API endpoints.
+
+For Internal API probing, provide one of:
+
+```bash
+TRILIUM_INTERNAL_TOKEN="..." trilium-etapi/scripts/probe-internal-api.sh
+TRILIUM_SESSION_COOKIE="trilium.sid=..." trilium-etapi/scripts/probe-internal-api.sh
+TRILIUM_PASSWORD="..." trilium-etapi/scripts/probe-internal-api.sh
+```
+
+With `TRILIUM_PASSWORD`, the probe mints a temporary Internal API token via `POST /api/login/token`. Without Internal API auth, `probe-internal-api.sh` only verifies public endpoints and the auth boundary. It deliberately avoids destructive or parameterized `/api/...` endpoints unless a future task adds targeted fixtures for them.
 
 ## Core Patterns (curl + jq)
 
@@ -176,6 +214,7 @@ curl -sX PUT "$TRILIUM_URL/etapi/backup/now" \
 ## Common Pitfalls
 
 - **Don't add a `Bearer` prefix to `Authorization`** unless you're on v0.93+ and explicitly want Bearer. The raw token form works on every version.
+- **Don't use zsh's lowercase `path` as a script variable.** In zsh it aliases `PATH` and can make later commands disappear.
 - **`PUT /notes/{id}/content` body is `text/plain`** (NOT `text/html`). The OpenAPI spec is explicit on this.
 - **`PATCH /notes/{id}` only patches a subset**: `title`, `type`, `mime`, `dateCreated`, `utcDateCreated`. Use `PUT .../content` to change content.
 - **`PATCH /branches/{id}` only patches `prefix` and `notePosition`**. To re-parent a note you must DELETE the branch and POST a new one.
@@ -185,6 +224,7 @@ curl -sX PUT "$TRILIUM_URL/etapi/backup/now" \
 - **EntityId pattern is `[a-zA-Z0-9_]{4,32}`.** `root` is the special root noteId.
 - **Error responses are always `{status, code, message}`.** Branch on the stable `code` constant (e.g. `NOTE_IS_PROTECTED`), not on the human-readable message.
 - **`/auth/login` is rate-limited.** Too many failures returns 429 and temporarily blacklists the client IP.
+- **`/auth/logout` invalidates the token used for that request.** Only run it against a temporary token, not your long-lived ETAPI token.
 
 ## Note Types
 
