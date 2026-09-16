@@ -9,6 +9,9 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` (frontmatter
 | Skill | Description |
 |-------|-------------|
 | [trilium-etapi](trilium-etapi/) | Interact with a Trilium Notes server via the ETAPI REST API — notes, branches, attributes, attachments, day/week/month notes. |
+| [brave-search](brave-search/) | Web, news, image, and video search via the Brave Search API — freshness, language, and safe-search filters. |
+| [serpapi-search](serpapi-search/) | Structured SERP data from 100+ engines (Google, Bing, Baidu, YouTube, DuckDuckGo) via the SerpApi REST API. |
+| [youcom-search](youcom-search/) | Cited web search and batch URL content extraction (up to 10 URLs per call) via the You.com API. |
 
 ## Installing with `npx skills`
 
