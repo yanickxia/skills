@@ -59,6 +59,18 @@ curl -s -X POST "$YOU_API_BASE_URL/api/contents" \
 ... | jq '.results[] | keys'
 ```
 
+**Gateway mode**: when `YOU_API_BASE_URL` points at a self-hosted gateway (see [SKILL.md](SKILL.md#custom-gateway-base-url-override)) rather than `https://api.you.com`, the gateway may unwrap or reshape the upstream response. One observed gateway (an `ai-proxy` search adapter) returns a top-level array instead of a `results` object:
+
+```json
+[{"html": "<!doctype html>..."}]
+```
+
+Detect both shapes before extracting fields:
+
+```bash
+... | jq 'if type == "array" then .[0] | keys else .results[0] | keys end'
+```
+
 To handle more than 10 URLs, split the list into batches of ≤10 and combine the responses.
 
 ---
