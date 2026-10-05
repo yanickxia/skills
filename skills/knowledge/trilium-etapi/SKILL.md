@@ -77,21 +77,21 @@ Full endpoint, parameter, and schema reference: [api-reference.md](api-reference
 Use the bundled scripts before publishing or after changing examples:
 
 ```bash
-trilium-etapi/scripts/list-api-endpoints.sh --kind etapi
-trilium-etapi/scripts/list-api-endpoints.sh --kind internal
-trilium-etapi/scripts/probe-internal-api.sh
+skills/knowledge/trilium-etapi/scripts/list-api-endpoints.sh --kind etapi
+skills/knowledge/trilium-etapi/scripts/list-api-endpoints.sh --kind internal
+skills/knowledge/trilium-etapi/scripts/probe-internal-api.sh
 
 TRILIUM_URL="http://localhost:37840" \
 TRILIUM_TOKEN="$TRILIUM_TOKEN" \
-trilium-etapi/scripts/validate-live.sh
+skills/knowledge/trilium-etapi/scripts/validate-live.sh
 ```
 
 The live validator prompts for `TRILIUM_TOKEN` if it is not exported and stdin is a TTY. It creates temporary notes under `root` and deletes them at exit. Optional checks:
 
 ```bash
-TRILIUM_VALIDATE_BACKUP=1 trilium-etapi/scripts/validate-live.sh
-TRILIUM_VALIDATE_IMPORT=1 trilium-etapi/scripts/validate-live.sh
-TRILIUM_PASSWORD="..." trilium-etapi/scripts/validate-live.sh
+TRILIUM_VALIDATE_BACKUP=1 skills/knowledge/trilium-etapi/scripts/validate-live.sh
+TRILIUM_VALIDATE_IMPORT=1 skills/knowledge/trilium-etapi/scripts/validate-live.sh
+TRILIUM_PASSWORD="..." skills/knowledge/trilium-etapi/scripts/validate-live.sh
 ```
 
 `TRILIUM_VALIDATE_IMPORT=1` currently uses the documented `POST /notes/{noteId}/import` endpoint with an exported ZIP body. On Trilium 0.103.0 this endpoint may time out; keep the curl timeout enabled and report the version when debugging.
@@ -101,9 +101,9 @@ The Trilium "Internal API" docs are separate from ETAPI. Internal `/api/...` end
 For Internal API probing, provide one of:
 
 ```bash
-TRILIUM_INTERNAL_TOKEN="..." trilium-etapi/scripts/probe-internal-api.sh
-TRILIUM_SESSION_COOKIE="trilium.sid=..." trilium-etapi/scripts/probe-internal-api.sh
-TRILIUM_PASSWORD="..." trilium-etapi/scripts/probe-internal-api.sh
+TRILIUM_INTERNAL_TOKEN="..." skills/knowledge/trilium-etapi/scripts/probe-internal-api.sh
+TRILIUM_SESSION_COOKIE="trilium.sid=..." skills/knowledge/trilium-etapi/scripts/probe-internal-api.sh
+TRILIUM_PASSWORD="..." skills/knowledge/trilium-etapi/scripts/probe-internal-api.sh
 ```
 
 With `TRILIUM_PASSWORD`, the probe mints a temporary Internal API token via `POST /api/login/token`. Without Internal API auth, `probe-internal-api.sh` only verifies public endpoints and the auth boundary. It deliberately avoids destructive or parameterized `/api/...` endpoints unless a future task adds targeted fixtures for them.

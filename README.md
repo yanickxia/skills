@@ -1,18 +1,18 @@
 # skills
 
-A collection of Claude Code skills.
+A collection of agent skills organized by capability.
 
-Each subdirectory is a self-contained skill with its own `SKILL.md` (frontmatter-defined name, description, and trigger hints) plus any supporting reference files.
+Each directory under `skills/<category>/` is a self-contained skill with its own `SKILL.md` (frontmatter-defined name, description, and trigger hints) plus any supporting resources.
 
 ## Available skills
 
-| Skill | Description |
-|-------|-------------|
-| [model-onboarding](skills/ai/model-onboarding/) | AI: verify Chat, Messages, and Responses APIs, model metadata, streaming, complete tool-call round trips, and real-client compatibility. |
-| [trilium-etapi](trilium-etapi/) | Interact with a Trilium Notes server via the ETAPI REST API — notes, branches, attributes, attachments, day/week/month notes. |
-| [brave-search](brave-search/) | Web, news, image, and video search via the Brave Search API — freshness, language, and safe-search filters. |
-| [serpapi-search](serpapi-search/) | Structured SERP data from 100+ engines (Google, Bing, Baidu, YouTube, DuckDuckGo) via the SerpApi REST API. |
-| [youcom-search](youcom-search/) | Cited web search and batch URL content extraction (up to 10 URLs per call) via the You.com API. |
+| Category | Skill | Description |
+|----------|-------|-------------|
+| AI | [model-onboarding](skills/ai/model-onboarding/) | Onboard models and providers: verify Chat, Messages, and Responses APIs, model metadata, streaming, tool calls, routing, and real-client compatibility. |
+| Search | [brave-search](skills/search/brave-search/) | Web, news, image, and video search via the Brave Search API — freshness, language, and safe-search filters. |
+| Search | [serpapi-search](skills/search/serpapi-search/) | Structured SERP data from 100+ engines (Google, Bing, Baidu, YouTube, DuckDuckGo) via the SerpApi REST API. |
+| Search | [youcom-search](skills/search/youcom-search/) | Cited web search and batch URL content extraction (up to 10 URLs per call) via the You.com API. |
+| Knowledge | [trilium-etapi](skills/knowledge/trilium-etapi/) | Interact with a Trilium Notes server via the ETAPI REST API — notes, branches, attributes, attachments, day/week/month notes. |
 
 ## Installing with `npx skills`
 
@@ -51,9 +51,23 @@ By default local installs are symlinked into agent directories. Add `--copy` if 
 ## Layout
 
 ```
-<skill-name>/
+skills/
+├── ai/
+│   └── model-onboarding/
+├── search/
+│   ├── brave-search/
+│   ├── serpapi-search/
+│   └── youcom-search/
+└── knowledge/
+    └── trilium-etapi/
+
+skills/<category>/<skill-name>/
 ├── SKILL.md          # entry point (name, description, content)
 ├── api-reference.md  # optional detailed reference
+├── references/       # optional task-specific guidance
+├── agents/           # optional agent UI metadata
+├── scripts/          # optional executable helpers
+├── tests/            # optional validation scripts
 └── Makefile          # publish helper (clawhub)
 ```
 
@@ -62,7 +76,7 @@ By default local installs are symlinked into agent directories. Add `--copy` if 
 Each skill's `Makefile` bumps `VERSION` and publishes via `clawhub`:
 
 ```bash
-cd <skill-name>
+cd skills/<category>/<skill-name>
 make publish                 # uses VERSION from Makefile
 make publish VERSION=0.0.2   # override
 ```

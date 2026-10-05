@@ -194,7 +194,7 @@ curl -s -X POST "$YOU_API_BASE_URL/api/search" \
 Run the static checks before publishing or after editing examples:
 
 ```bash
-youcom-search/tests/static-validation.sh
+skills/search/youcom-search/tests/static-validation.sh
 ```
 
 The script verifies the `Makefile` metadata, the required environment variables and endpoints in `SKILL.md`, and the presence of the research endpoint in `api-reference.md`. It performs no network calls and needs no API key.

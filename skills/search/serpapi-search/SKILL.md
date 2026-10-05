@@ -169,7 +169,7 @@ echo "$resp" | jq -e 'has("error")' >/dev/null && echo "$resp" | jq -r .error
 Use the bundled static validator before publishing or after editing examples:
 
 ```bash
-bash serpapi-search/tests/static-validation.sh
+bash skills/search/serpapi-search/tests/static-validation.sh
 ```
 
 It checks the Makefile `SKILL_DIR`, that `SKILL.md` documents `SERPAPI_API_KEY`, `SERPAPI_BASE_URL`, `search.json`, `api_key`, and `serpapi.com`, and that `api-reference.md` covers `organic_results` and `account.json`.

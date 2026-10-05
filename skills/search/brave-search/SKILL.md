@@ -186,7 +186,7 @@ jq '.web.results[] | {title, url}' /tmp/brave.json
 Run the static checks before publishing or after editing examples:
 
 ```bash
-brave-search/tests/static-validation.sh
+skills/search/brave-search/tests/static-validation.sh
 ```
 
 The script verifies the `Makefile` metadata, the required environment variables and header in `SKILL.md`, and the presence of the news and images endpoints in `api-reference.md`. It performs no network calls and needs no API key.
