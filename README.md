@@ -8,6 +8,7 @@ Each subdirectory is a self-contained skill with its own `SKILL.md` (frontmatter
 
 | Skill | Description |
 |-------|-------------|
+| [model-onboarding](skills/ai/model-onboarding/) | AI: verify Chat, Messages, and Responses APIs, model metadata, streaming, complete tool-call round trips, and real-client compatibility. |
 | [trilium-etapi](trilium-etapi/) | Interact with a Trilium Notes server via the ETAPI REST API — notes, branches, attributes, attachments, day/week/month notes. |
 | [brave-search](brave-search/) | Web, news, image, and video search via the Brave Search API — freshness, language, and safe-search filters. |
 | [serpapi-search](serpapi-search/) | Structured SERP data from 100+ engines (Google, Bing, Baidu, YouTube, DuckDuckGo) via the SerpApi REST API. |

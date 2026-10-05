@@ -1,0 +1,3 @@
+interface:
+  display_name: "模型接入"
+  short_description: "核验模型的三种 API 协议、能力元数据及实际客户端接入链路"
