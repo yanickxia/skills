@@ -8,6 +8,7 @@ Each directory under `skills/<category>/` is a self-contained skill with its own
 
 | Category | Skill | Description |
 |----------|-------|-------------|
+| Workflow | [paseo-manager](skills/workflow/paseo-manager/) | Route requests from a dedicated Paseo entry project to the right workspace; reuse an agent or hand off to a new one. Requires the environment's `paseo` and `paseo-handoff` skills. |
 | AI | [model-onboarding](skills/ai/model-onboarding/) | Onboard models and providers: verify Chat, Messages, and Responses APIs, model metadata, streaming, tool calls, routing, and real-client compatibility. |
 | Search | [brave-search](skills/search/brave-search/) | Web, news, image, and video search via the Brave Search API — freshness, language, and safe-search filters. |
 | Search | [serpapi-search](skills/search/serpapi-search/) | Structured SERP data from 100+ engines (Google, Bing, Baidu, YouTube, DuckDuckGo) via the SerpApi REST API. |
@@ -52,6 +53,8 @@ By default local installs are symlinked into agent directories. Add `--copy` if 
 
 ```
 skills/
+├── workflow/
+│   └── paseo-manager/
 ├── ai/
 │   └── model-onboarding/
 ├── search/
